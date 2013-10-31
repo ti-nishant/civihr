@@ -70,21 +70,7 @@ function hrcase_civicrm_managed(&$entities) {
 }
 
 function hrcase_civicrm_buildForm($formName, &$form) {
-  if ($form instanceof CRM_Case_Form_Activity OR $form instanceof CRM_Case_Form_Case OR $form instanceof CRM_Case_Form_CaseView) {
-    $optionID = CRM_Core_BAO_OptionValue::getOptionValuesAssocArrayFromName('activity_status');
-    $completed = array_search( 'Completed', $optionID );
-    CRM_Core_Resources::singleton()->addSetting(array(
-      'hrcase' => array(
-        'statusID' => $completed,
-      ),
-    ));
-    if( $form instanceof CRM_Case_Form_CaseView ) {
-    CRM_Core_Resources::singleton()->addSetting(array(
-      'hrcase' => array(
-        'manageScreen' => 1,
-      ),
-    ));
-    }
+  if ($form instanceof CRM_Case_Form_Activity OR $form instanceof CRM_Case_Form_Case) {
     CRM_Core_Resources::singleton()->addScriptFile('org.civicrm.hrcase', 'js/hrcase.js');
   }
 }
@@ -132,4 +118,15 @@ function hrcase_civicrm_navigationMenu(&$params) {
       $params[$values['parent_id']]['child'][$values['id']]['child'] = $caseMenuItems;
     }
   }
+}
+
+/**
+ * Implementation of hook_civicrm_caseTypes
+ *
+ * Generate a list of case-types
+ *
+ * Note: This hook only runs in CiviCRM 4.4+.
+ */
+function hrcase_civicrm_caseTypes(&$caseTypes) {
+  _hrcase_civix_civicrm_caseTypes($caseTypes);
 }
