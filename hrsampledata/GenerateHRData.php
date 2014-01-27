@@ -1073,7 +1073,7 @@ class GenerateHRData {
 
     // create array of absences to be added
     for($i = 0; $i <= mt_rand(1, 3); $i++){
-      $absences[] = array(
+      $absenceValues[] = array(
         'activity_date_time' => date("Y-m-d h:i:s", strtotime("+".$i."day", strtotime($start_date))),
         'duration' => $duration[array_rand($duration)],
         'source_contact_id' => $cid,
@@ -1084,7 +1084,7 @@ class GenerateHRData {
     civicrm_api3('Activity', 'replace', array(
       'activity_type_id' => array_search('Absence', $activityTypes['values']),
       'source_record_id' => $absenceRequest['id'],
-      'values' => $absences,
+      'values' => $absenceValues,
     ));
   }
 }
