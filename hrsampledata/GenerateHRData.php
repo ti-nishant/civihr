@@ -523,13 +523,12 @@ class GenerateHRData {
       $org->addressee_display = $org->display_name;
       $org->hash = crc32($org->sort_name);
       $this->_update($org);
-
-      //if Absence (CiviHR) extension is enabled, add the sample data
-      $this->addAbsencePeriods();
     }
+    //if Absence (CiviHR) extension is enabled, add the sample data
+    $this->addAbsencePeriods();
   }
 
-
+  
   /**
    * Create an address for a contact
    *
@@ -977,6 +976,9 @@ class GenerateHRData {
    * This is a method to create absence periods
    */
   private function addAbsencePeriods() {
+    if (CRM_HRAbsence_BAO_HRAbsencePeriod::getRecordCount($params = array()) != 0) {
+      CRM_Core_DAO::executeQuery("DELETE FROM civicrm_absence_period");
+    }
     // Create a set of absence periods
     $periods = array();
     $periods[] = array(
